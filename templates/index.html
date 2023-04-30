@@ -9,20 +9,32 @@
 <section class="section">
     <h1 class="title">Quick Start</h1>
     <h2 class="subtitle">
-      Select the <strong>option</strong>, you would like to see.
+      Select an <strong>option</strong>
     </h2>
     <div class="box">
-      <button class="button" onclick="activate('test-modal')">Info</button>
-      <button class="button is-primary" data-show="quickview" data-target="quickviewDefault" onclick="quickview('quickviewDefault')">Toggle Quickview</button>
+      <a class="button is-primary" href="{{ url_for('auth.signup') }}">
+        <strong>Sign up</strong>
+      </a>
+      <a class="button is-primary" href="{{ url_for('auth.login') }}">
+        Log in
+      </a>
+      <button class="button is-primary" onclick="activate('test-modal')">Info</button>
+      {% if current_user.is_authenticated %}
+      <button class="button is-primary" data-show="quickview" data-target="quickviewDefault" onclick="quickview('quickviewDefault')">More Information to My Profile</button>
+      <a class="button is-primary" href="{{ url_for('main.inventory') }}">
+        <strong>My Inventory<strong>
+      </a>
+      {% endif %}
     </div>
   </section>
+  {% if current_user.is_authenticated %}
   <div class="row">
     <div class="column">
         <div id="to-collapse" class="is-collapsible" aria-expanded="true">
           <section class="accordions">
-            <article id="card-accordion" class="accordion">
+            <article id="card-accordion" class="accordion is-active">
               <div class="accordion-header">
-                <p>Mein Profil</p>
+                <p>My Profile</p>
                 <button class="toggle" aria-label="toggle" onclick="accordion('card-accordion')"></button>
               </div>
               <div class="accordion-body">
@@ -30,7 +42,7 @@
                   <div class="card">
                     <header class="card-header">
                       <p class="card-header-title">
-                        Georg Löffler
+                        Hello {{username}}
                       </p>
                     </header>
                     <div class="card-image">
@@ -46,13 +58,13 @@
                           </figure>
                         </div>
                         <div class="media-content">
-                          <p class="title is-4">Georg Löffler</p>
-                          <p class="subtitle is-6">@georgloffler</p>
+                          <p class="title is-4">{{current_user.surname}} {{current_user.name}}</p>
+                          <p class="subtitle is-6">@{{current_user.username}}</p>
                         </div>
                       </div>
                       <div class="content">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Phasellus nec iaculis mauris. <a>@g-man</a>.
+                        Phasellus nec iaculis mauris. <a>@{{current_user.username}}</a>.
                         <a href="#">#flask</a> <a href="#">#isawesome</a>
                         <br>
                         <time datetime="2022-8-1">11:09 PM - 1 Aug 2022</time>
@@ -67,6 +79,7 @@
       </div>
     </div>
   </div>
+  {% endif %}
 </main>
 </div>
       
@@ -75,19 +88,19 @@
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <p class="modal-card-title">Modal title</p>
+            <p class="modal-card-title">Get Started</p>
             <button class="delete" onclick="deactivate('test-modal')" aria-label="close"></button>
           </header>
           <section class="modal-card-body">
             <section class="accordions">
-              <article id="test-accordion" class="accordion">
+              <article id="test-accordion" class="accordion is-active">
                 <div class="accordion-header">
-                  <p>Hello World</p>
+                  <p>How it started</p>
                   <button class="toggle" aria-label="toggle" onclick="accordion('test-accordion')"></button>
                 </div>
                 <div class="accordion-body">
                   <div class="accordion-content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
+                    This page has been developed for creating your own inventory of things you want to keep track of. Things you own like: Legos, Vinyls, Cars, etc. To use it you need to create an <strong>account</strong>, once granted access you can log in and start inventorising stuff! Any request or feedback please to <strong>lofflerg@hotmail.com</strong>.
                   </div>
                 </div>
               </article>

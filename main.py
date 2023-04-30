@@ -1,4 +1,5 @@
 from flask import Blueprint, Flask, render_template, request, url_for, flash, redirect
+from flask_mail import Mail, Message
 from flask_login import login_required, current_user
 from . import db
 from .models import *
@@ -6,21 +7,71 @@ from .models import *
 #initialize flask app
 main = Blueprint('main', __name__)
 
+mail_app = Flask(__name__)
+#Email app config
+mail_app.config['MAIL_SERVER']='smtp.gmail.com'
+mail_app.config['MAIL_PORT'] = 587
+mail_app.config['MAIL_USERNAME'] = 'georgsinventory@gmail.com'
+mail_app.config['MAIL_PASSWORD'] = 'udqkmynqxdduvvci'
+mail_app.config['MAIL_USE_TLS'] = True
+mail_app.config['MAIL_USE_SSL'] = False
+mail = Mail(mail_app)
+
 @login_required
 @main.route('/')
 def index():
     if current_user.is_authenticated:
         #print(current_user.username)
-        return render_template('index.html', username=current_user.username)
+        print(current_user.is_admin)
+        return render_template('index.html', username=current_user.username, is_admin=current_user.is_admin)
     else:
         return render_template('index.html')
+
+@login_required
+@main.route('/access')
+def access():
+    if current_user.is_authenticated:
+        #print(current_user.username)
+        unactive_users = db.session.query(User.email, User.surname, User.name, User.username, User.user_id).filter(User.is_active=='0').all()
+        return render_template('access.html', username=current_user.username, is_admin=current_user.is_admin, unactive_users=unactive_users)
+    else:
+        return render_template('access.html')
     
+@login_required
+@main.route('/access/grant_access', methods=['POST'])
+def grant_access():
+    f = request.form
+    ids = []
+    emails = []
+    #print(f)
+    
+    for key in f.keys():
+        for value in f.getlist(key):
+            #print(key,":",value)  
+            ids.append(key)
+            db.session.query(User).filter(User.user_id == key).update({'is_active': True})
+            emails.append(db.session.query(User.email).filter(User.user_id == key).first())
+            db.session.commit()
+
+    #print(ids)
+    #print(emails)
+    for key in emails:
+        for k in key:
+            #print(k)  
+            #send email to user
+            msg = Message('Your account has been activated!', sender =   'georgsinventory@gmail.com', recipients = [k])
+            msg.body = "You can now login to your own inventory!"
+            mail.send(msg)
+            flash('Changes have been saved!')
+    
+    return redirect(url_for('main.access'))
+   
 @login_required
 @main.route('/dashboard')
 def dashboard():
     if current_user.is_authenticated:
         #print(current_user.username)
-        return render_template('dashboard.html', username=current_user.username)
+        return render_template('dashboard.html', username=current_user.username, is_admin=current_user.is_admin)
     else:
         return render_template('dashboard.html')
 
@@ -30,11 +81,11 @@ def inventory():
     if current_user.is_authenticated:
         #print(current_user.username)
         cats = db.session.query(Category.category_id, Category.name).all()
-        items = db.session.query(Item.item_id, Item.name, Item.price, Item.count, Item.user_id, Category.name, Subcategory.name, Item.time_created).filter(Item.user_id==User.user_id).filter(Category.category_id==Subcategory.category_id).filter(Item.user_id==current_user.user_id).all()
+        items = db.session.query(Item.item_id, Item.name, Item.description, Item.external_url, Item.brand, Item.color, Item.code_number, Item.count, Item.user_id, Category.name, Subcategory.name, Item.time_created).filter(Item.user_id==User.user_id).filter(Category.category_id==Subcategory.category_id).filter(Item.user_id==current_user.user_id).all()
         subcats = db.session.query(Subcategory.subcategory_id, Category.category_id, Category.name, Subcategory.name).join(Category).filter(Category.category_id==Subcategory.category_id).all()
         #print(subcats)
-        print(items)
-        return render_template('inventory.html', username=current_user.username, user_id=current_user.user_id, cats=cats, items=items, subcats=subcats)
+        #print(items)
+        return render_template('inventory.html', username=current_user.username, user_id=current_user.user_id, cats=cats, items=items, subcats=subcats, is_admin=current_user.is_admin)
     else:
         return render_template('index.html')
     
@@ -55,7 +106,15 @@ def category():
 @main.route('/item', methods=['POST'])
 def item():
     if request.form.get('item-name') != None:
-        new_cat = Item(name=request.form.get('item-name'), price=request.form.get('item-price'), count=request.form.get('item-count'), user_id=current_user.user_id, category_id=request.form.get('item-cat'), subcategory_id=request.form.get('item-subcat'))
+        new_cat = Item(name=request.form.get('item-name'),
+                       count=request.form.get('item-count'),
+                       description=request.form.get('item-description'),
+                       brand=request.form.get('item-brand'),
+                       color=request.form.get('item-color'),
+                       external_url=request.form.get('item-url'),
+                       code_number=request.form.get('item-number'),
+                       user_id=current_user.user_id,
+                       subcategory_id=request.form.get('item-subcat'))
         db.session.add(new_cat)
         db.session.commit()
         flash('New item ' + request.form.get('item-name') + ' has been successfully added.')

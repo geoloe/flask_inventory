@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>{% block title %} Inventory Home Site {% endblock %}</title>
+        <title>{% block title %} Inventorize by Georg {% endblock %}</title>
         <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.2/js/all.js" crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
         <!-- Navigation -->
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-              <a class="navbar-item" href="https://bulma.io">
+              <a class="navbar-item" href="">
                 <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
               </a>
         
@@ -75,6 +75,18 @@
                     </a>
                   </div>
                 </div>
+                {% if is_admin %}
+                <div class="navbar-item has-dropdown is-hoverable">
+                  <a class="navbar-link">
+                    Access
+                  </a>     
+                  <div class="navbar-dropdown">
+                    <a class="navbar-item" href="{{ url_for('main.access') }}">
+                      Users
+                    </a>
+                  </div>
+                </div>
+                {% endif %}
               </div>
           
               <div class="navbar-end">
@@ -124,13 +136,13 @@
         
           <div id="quickviewDefault" class="quickview">
             <header class="quickview-header">
-              <p class="title">Quickview title</p>
+              <p class="title">My Profile</p>
               <span class="delete" data-dismiss="quickview" onclick="quickview('quickviewDefault')"></span>
             </header>
           
             <div class="quickview-body">
               <div class="quickview-block">
-                ...
+                This Sidebar is under development. Stay Tuned!!
               </div>
             </div>
           
@@ -146,7 +158,7 @@
             <footer class="footer">
               <div class="content has-text-centered">
                 <p>
-                  <strong>Inventory</strong> by <a href="https://jgthms.com">Georg Löffler</a>. The source code is licensed
+                  <strong>Inventory</strong> by <a href="">Georg Löffler</a>. The source code is licensed
                   <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
                   is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
                 </p>

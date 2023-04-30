@@ -13,6 +13,7 @@ def create_app():
     password = "Galg__64"
     app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://georg:"+password+"@localhost:3306/inventory"
     #'sqlite:///db.sqlite'
+
     
     with app.app_context():
 
@@ -52,10 +53,14 @@ def create_app():
         # blueprint for non-auth parts of app
         from .main import main as main_blueprint
         app.register_blueprint(main_blueprint)
+        
+        # blueprint for mailing parts of app
+        from .mailing import mailing as mailing_blueprint
+        app.register_blueprint(mailing_blueprint)
 
     return app
 
 ### initialize flask app ###
 if __name__ == '___main___':
     app = create_app()
-    create_app().run(host="192.168.2.221", port="4444", debug=True)
+    #create_app().run(host="192.168.2.221", port="4444", debug=True)
