@@ -154,3 +154,14 @@ def deleteitem():
         flash('No items selected.')
     
     return redirect(url_for('main.inventory'))
+
+@login_required
+@main.route('/edit/item', methods=['POST'])
+def edititem():
+    f = request.form
+    if f:
+        for key in f.keys():
+            for value in f.getlist(key):
+                print(key,":",value)  
+    
+    return redirect(url_for('main.inventory'))

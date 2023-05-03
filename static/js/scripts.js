@@ -35,26 +35,82 @@ function previous(){
 //global arrays containing item-ids and names from Item Table
 const item_ids = [];
 const item_names = [];
+const item_descriptions = [];
+const item_urls = [];
+const item_brand = [];
+const item_color = [];
+const item_number = [];
+const item_count = [];
+const item_cat = [];
+const item_sub = [];
+const selected_items = [];
 
 function selectrow(row){
   //Remove is-selected class from clicked row element
   if (row.classList.contains('is-selected')){
     //Get row item-id value from clicked row element to be unselected
     var id = row.querySelectorAll("td")[0].innerHTML;
-    console.log("Unselected Item id: " + id);
     //If unselected item is in Array, then remove it from array
     if (item_ids.includes(id)) {
       item_ids.splice(item_ids.indexOf(id), 1);
     }
-
+    
     var name = row.querySelectorAll("td")[1].innerHTML;
-    console.log("Unselected Item name: " + name);
+    //If unselected item is in Array, then remove it from array
     if (item_names.includes(name)) {
       item_names.splice(item_names.indexOf(name), 1);
     }
 
+    var desc = row.querySelectorAll("td")[2].innerHTML;
+    if (item_descriptions.includes(desc)) {
+      item_descriptions.splice(item_descriptions.indexOf(desc), 1);
+    }
+
+    var url = row.querySelectorAll("td")[3].innerHTML;
+    if (item_urls.includes(url)) {
+      item_urls.splice(item_urls.indexOf(url), 1);
+    }
+
+    var brand = row.querySelectorAll("td")[4].innerHTML;
+    if (item_brand.includes(brand)) {
+      item_brand.splice(item_brand.indexOf(brand), 1);
+    }
+
+    var color = row.querySelectorAll("td")[5].innerHTML;
+    if (item_color.includes(color)) {
+      item_color.splice(item_color.indexOf(color), 1);
+    }
+
+    var number = row.querySelectorAll("td")[6].innerHTML;
+    if (item_number.includes(number)) {
+      item_number.splice(item_number.indexOf(number), 1);
+    }
+
+    var count = row.querySelectorAll("td")[7].innerHTML;
+    if (item_count.includes(count)) {
+      item_count.splice(item_count.indexOf(count), 1);
+    }
+
+    var cat = row.querySelectorAll("td")[8].innerHTML;
+    if (item_cat.includes(cat)) {
+      item_cat.splice(item_cat.indexOf(cat), 1);
+    }
+
+    var sub = row.querySelectorAll("td")[9].innerHTML;
+    if (item_sub.includes(sub)) {
+      item_sub.splice(item_sub.indexOf(count), 1);
+    }
+
     console.log("Current ids: " + item_ids);
-    console.log("Current ids: " + item_names);
+    console.log("Current names: " + item_names);
+    console.log("Current urls: " + item_urls);
+    console.log("Current desc: " + item_descriptions);
+    console.log("Current brand: " + item_brand);
+    console.log("Current count: " + item_count);
+    console.log("Current color: " + item_color);
+    console.log("Current cats: " + item_cat);
+    console.log("Current item number: " + item_number);
+    console.log("Current subs: " + item_sub);
 
     row.className = row.className.replace(" odd is-selected", " odd");
     row.className = row.className.replace(" even is-selected", " even");
@@ -63,25 +119,51 @@ function selectrow(row){
   else{
     row.className += " is-selected";
     //Get row item-id value from clicked row element to be selected
-    var id = row.querySelectorAll("td")[0].innerHTML;
-    console.log("Selected Item id: " + id);
     //If selected item is not in Array, then add it to array
-    if (!item_ids.includes(id)) {
-      item_ids.push(id);
-    }
+    var id = row.querySelectorAll("td")[0].innerHTML;
+    item_ids.push(id);
 
     var name = row.querySelectorAll("td")[1].innerHTML;
-    console.log("Unselected Item name: " + name);
-    if (!item_names.includes(name)) {
-      item_names.push(name);
-    }
+    item_names.push(name);
+
+    var desc = row.querySelectorAll("td")[2].innerHTML;
+    item_descriptions.push(desc);
+
+    var url = row.querySelectorAll("td")[3].innerHTML;
+    item_urls.push(url);
+
+    var brand = row.querySelectorAll("td")[4].innerHTML;
+    item_brand.push(brand);
+
+    var color = row.querySelectorAll("td")[5].innerHTML;
+    item_color.push(color);
+
+    var number = row.querySelectorAll("td")[6].innerHTML;
+    item_number.push(number);
+
+    var count = row.querySelectorAll("td")[7].innerHTML;
+    item_count.push(count);
+
+    var cat = row.querySelectorAll("td")[8].innerHTML;
+    item_cat.push(cat);
+
+    var sub = row.querySelectorAll("td")[9].innerHTML;
+    item_sub.push(sub);
 
     console.log("Current ids: " + item_ids);
-    console.log("Current ids: " + item_names);
+    console.log("Current names: " + item_names);
+    console.log("Current urls: " + item_urls);
+    console.log("Current desc: " + item_descriptions);
+    console.log("Current brand: " + item_brand);
+    console.log("Current count: " + item_count);
+    console.log("Current color: " + item_color);
+    console.log("Current cats: " + item_cat);
+    console.log("Current item number: " + item_number);
+    console.log("Current subs: " + item_sub);
   }
 }
 
-function add_items(){
+function add_items_to_delete(){
     // Get the element where the inputs will be added to
     var container = document.getElementById("delete-inputs");
     // Remove every children it had before
@@ -98,17 +180,69 @@ function add_items(){
       var text = document.createElement("li");
 
       var hidden = document.createElement("input");
-      hidden.type = "hidden"
-      hidden.name = item_names[i]
+      hidden.type = "hidden";
+      hidden.name = item_names[i];
       hidden.value = item_ids[i];
 
       text.innerHTML = "Item: '" + item_names[i] + "'";
 
       container.appendChild(input);
-      input.appendChild(list)
-      list.appendChild(text)
-      list.appendChild(hidden)
+      input.appendChild(list);
+      list.appendChild(text);
+      list.appendChild(hidden);
     }
+}
+
+function edit_items_info(){
+
+  if (item_ids.length == 0){
+    alert("Please select an item");
+    var container = document.getElementById("edit-tabs");
+    var msg = document.createElement("div");
+    msg.className = "notification is-info";
+    msg.innerHTML = "No items selected";
+    container.appendChild(msg);
+  }
+  else{
+
+  // Get the element where the inputs will be added to
+  var container = document.getElementById("edit-tabs");
+
+  var list = document.createElement("ul");
+  container.appendChild(list);
+  for (i=0;i<item_ids.length;i++){
+    // Create an <li> element, set its type and name attributes
+    var text = document.createElement("li");
+    text.id = "item-tab_"+item_ids[i];
+    if(i==0){
+      text.className = "is-active";
+    }
+    else{
+      text.className = "";
+    }
+    text.setAttribute("name","items-tab")
+    var innertext = document.createElement("a");
+    innertext.innerHTML = item_names[i];
+    if(i==0){
+      text.setAttribute("onclick","itemTab('item-tab_"+""+item_ids[i]+"'"+","+"'item_"+""+item_ids[i]+"')");    
+    }
+    else{
+      text.setAttribute("onclick","itemTab('item-tab_"+""+item_ids[i]+"'"+","+"'item_"+""+item_ids[i]+"')");
+    }
+    text.appendChild(innertext);
+
+    list.appendChild(text);
+
+    //Create Edit tab content
+  }
+  }
+}
+
+function del_item_tabs_on_close(){
+  const myNode = document.getElementById("edit-tabs");
+  while (myNode.lastElementChild) {
+    myNode.removeChild(myNode.lastElementChild);
+  }
 }
 
 function rows(){
@@ -153,6 +287,28 @@ function apiTab(evt, apiTab) {
     document.getElementById(apiTab).style.visibility = "visible";
     document.getElementById(evt).className += "is-active"
   }
+
+function itemTab(evt, itemTab) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+  
+    // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("item-tab-content");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  
+  // Get all elements with name="my-tab" and remove the class "is-active"
+  tablinks = document.getElementsByName("items-tab");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace("is-active", "");
+  }
+  
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(itemTab).style.display = "block";
+  document.getElementById(itemTab).style.visibility = "visible";
+  document.getElementById(evt).className += "is-active"
+}
 
 function quickview(value) {
   var quickview = document.getElementById(value);
@@ -223,3 +379,7 @@ $(document).ready(function() {
 
   });
 });
+
+function insertAfter(referenceNode, newNode) {
+  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
