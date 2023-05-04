@@ -1,7 +1,6 @@
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text, Table, LargeBinary, Float, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-
 from flask_login import UserMixin
 from . import db
 import enum

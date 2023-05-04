@@ -1,8 +1,10 @@
 from flask import Blueprint, Flask, render_template, request, url_for, flash, redirect
 from flask_mail import Mail, Message
 from flask_login import login_required, current_user
+import json
 from . import db
 from .models import *
+import enum
 
 #initialize flask app
 main = Blueprint('main', __name__)
@@ -16,6 +18,17 @@ mail_app.config['MAIL_PASSWORD'] = 'udqkmynqxdduvvci'
 mail_app.config['MAIL_USE_TLS'] = True
 mail_app.config['MAIL_USE_SSL'] = False
 mail = Mail(mail_app)
+
+def query_to_dict(f, name):
+    dictionary = {}
+    dictionary[name] = []
+    my_string = ''
+    for key in f:
+        for k in key:
+            dictionary[name].append(my_string.join(str(k)))
+
+    #dictionary[name].append(names)
+    return dictionary
 
 @login_required
 @main.route('/')
@@ -81,11 +94,19 @@ def inventory():
     if current_user.is_authenticated:
         #print(current_user.username)
         cats = db.session.query(Category.category_id, Category.name).all()
+        categories = db.session.query(Category.name).all()
+        subcategories = db.session.query(Subcategory.name).all()
         items = db.session.query(Item.item_id, Item.name, Item.description, Item.external_url, Item.brand, Item.color, Item.code_number, Item.count, Item.user_id, Category.name, Subcategory.name, Item.time_created).filter(Item.user_id==User.user_id).filter(Category.category_id==Subcategory.category_id).filter(Item.user_id==current_user.user_id).all()
         subcats = db.session.query(Subcategory.subcategory_id, Category.category_id, Category.name, Subcategory.name).join(Category).filter(Category.category_id==Subcategory.category_id).all()
+        categories = query_to_dict(categories, 'categories')
+        subcategories = query_to_dict(subcategories, 'subcategories')
+        print(categories, subcategories)
+
+        #make color list
+
         #print(subcats)
         #print(items)
-        return render_template('inventory.html', username=current_user.username, user_id=current_user.user_id, cats=cats, items=items, subcats=subcats, is_admin=current_user.is_admin)
+        return render_template('inventory.html', username=current_user.username, user_id=current_user.user_id, cats=cats, items=items, subcats=subcats, is_admin=current_user.is_admin, categories=categories, subcategories=subcategories)
     else:
         return render_template('index.html')
     

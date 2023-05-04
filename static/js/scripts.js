@@ -43,7 +43,6 @@ const item_number = [];
 const item_count = [];
 const item_cat = [];
 const item_sub = [];
-const selected_items = [];
 
 function selectrow(row){
   //Remove is-selected class from clicked row element
@@ -193,8 +192,14 @@ function add_items_to_delete(){
     }
 }
 
-function edit_items_info(){
-
+function edit_items_info(colors, categories, subcategories){
+  //if there are no elements selected create notification banner in modal
+  console.log(categories, subcategories);
+  for (const [key, value] of Object.entries(categories)) {
+    for(i=0;i<value.length;i++){
+      console.log("colors:" + value[i]);
+    }
+  }
   if (item_ids.length == 0){
     alert("Please select an item");
     var container = document.getElementById("edit-tabs");
@@ -203,11 +208,15 @@ function edit_items_info(){
     msg.innerHTML = "No items selected";
     container.appendChild(msg);
   }
+  // if there are 1 or more items selected show tabs and forms for each item
   else{
 
   // Get the element where the inputs will be added to
   var container = document.getElementById("edit-tabs");
 
+  /*
+  //Create Tabs for each item selected
+  */ 
   var list = document.createElement("ul");
   container.appendChild(list);
   for (i=0;i<item_ids.length;i++){
@@ -232,13 +241,44 @@ function edit_items_info(){
     text.appendChild(innertext);
 
     list.appendChild(text);
+  /*
+  //Create Tabs for each item selected
+  */
 
-    //Create Edit tab content
+  /*
+  //Create edit tab content for each item selected
+  */ 
+    var content_div = document.createElement("div");
+    content_div.className = "item-tab-content";
+    content_div.id = "item_"+item_ids[i];
+    var field_div = document.createElement("div");
+    field_div.className = "field";
+
+
+    var label_name = document.createElement("label");
+    label_name.innerHTML = "Name";
+    var label_description = document.createElement("label");
+    label_description.innerHTML = "Description";
+    var label_link = document.createElement("label");
+    label_link.innerHTML = "External Link";
+    var color_label = document.createElement("label");
+    color_label.className = "label";
+    color_label.setAttribute("for", "item-select");
+    color_label.innerHTML = "Choose a color:";
+    var color_select = document.createElement("select");
+    color_select.setAttribute("name", "item-select");
+    var label_number = document.createElement("label");
+    label_number.innerHTML = "Item Number";
+    var label_number = document.createElement("label");
+    label_name.innerHTML = "Count";
+    var control_div = document.createElement("div");
+    control_div.className = "control";
   }
   }
 }
 
 function del_item_tabs_on_close(){
+  //delete edit modal content
   const myNode = document.getElementById("edit-tabs");
   while (myNode.lastElementChild) {
     myNode.removeChild(myNode.lastElementChild);

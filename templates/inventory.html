@@ -85,7 +85,7 @@
     </div>
     <footer class="card-footer">
       <button class="card-footer-item button" onclick="add_items_to_delete(); activate('delete-item-entry')" data-tooltip="Delete Item">Delete</button>
-      <button class="card-footer-item button" onclick="edit_items_info(); activate('edit-item-entry')" data-tooltip="Edit Item">Edit</button>
+      <button class="card-footer-item button" onclick="edit_items_info({{categories|safe}},{{subcategories|safe}}); activate('edit-item-entry')" data-tooltip="Edit Item">Edit</button>
     </footer>
   </div>
 </div>
@@ -384,8 +384,8 @@
           <div class="control">
             <input class="input" type="text" name="item-brand" placeholder="e.g. IKEA" required>
           </div>
-          <label class="label" for="color-select">Choose a color:</label>
-          <select name="item-color" id="color-select">
+          <label class="label" for="item-select">Choose a color:</label>
+          <select name="item-color">
               <option disabled selected value>--Please choose an option--</option>
               <option value="yellow">Yellow</option>
               <option value="blue">Blue</option>
