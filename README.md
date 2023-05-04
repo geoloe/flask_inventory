@@ -1,5 +1,11 @@
 # flask_inventory
 
+## Description
+
+Inventory as Full-Stack project with Admin and User Management, API Request, and Data Management via Categories and Subcategories (Filter, Excel and PDF Export).
+
+Sidenote: This project was developed for personal use and is still under development.
+
 ## Requisites:
 * Linux OS
 * Python 3.8.10
