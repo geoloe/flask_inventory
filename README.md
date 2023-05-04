@@ -1,12 +1,12 @@
 # flask_inventory
 
 ## Requisites:
-⋅⋅* Linux OS
-⋅⋅* Python 3.8.10
-⋅⋅* Conda
-⋅⋅* Node.JS
-⋅⋅* npm
-⋅⋅* MySQL 8.0 or higher
+* Linux OS
+* Python 3.8.10
+* Conda
+* Node.JS
+* npm
+* MySQL 8.0 or higher
 
 ### This guide is only for the development process!
 ## Deployment Steps for development:
