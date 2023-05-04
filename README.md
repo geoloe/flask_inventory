@@ -5,8 +5,6 @@
 Inventory as Full-Stack project with Admin and User Management, API Request, and Data Management via Categories and Subcategories (Filter, Excel and PDF Export).
 
 
-Inline-style: 
-
 ![alt text](https://github.com/geoloe/flask_inventory/blob/432e4d592afa07de4b0bb2862ffd20206d1887dd/inventory_demo.png "Example UI")
 
 
