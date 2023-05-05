@@ -10,7 +10,7 @@ def create_app():
     app = Flask(__name__)
 
     app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", os.urandom(24))
-    password = "Galg__64"
+    password = ""
     app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://georg:"+password+"@localhost:3306/inventory"
     #'sqlite:///db.sqlite'
 
