@@ -96,17 +96,22 @@ def inventory():
         cats = db.session.query(Category.category_id, Category.name).all()
         categories = db.session.query(Category.name).all()
         subcategories = db.session.query(Subcategory.name).all()
+        categories_id = db.session.query(Category.category_id).all()
+        subcategories_id = db.session.query(Subcategory.subcategory_id).all()
         items = db.session.query(Item.item_id, Item.name, Item.description, Item.external_url, Item.brand, Item.color, Item.code_number, Item.count, Item.user_id, Category.name, Subcategory.name, Item.time_created).filter(Item.user_id==User.user_id).filter(Category.category_id==Subcategory.category_id).filter(Item.user_id==current_user.user_id).all()
         subcats = db.session.query(Subcategory.subcategory_id, Category.category_id, Category.name, Subcategory.name).join(Category).filter(Category.category_id==Subcategory.category_id).all()
+        
         categories = query_to_dict(categories, 'categories')
         subcategories = query_to_dict(subcategories, 'subcategories')
+        categories_id = query_to_dict(categories_id, 'category ids')
+        subcategories_id = query_to_dict(subcategories_id, 'subcategory ids')
         print(categories, subcategories)
 
         #make color list
 
         #print(subcats)
         #print(items)
-        return render_template('inventory.html', username=current_user.username, user_id=current_user.user_id, cats=cats, items=items, subcats=subcats, is_admin=current_user.is_admin, categories=categories, subcategories=subcategories)
+        return render_template('inventory.html', username=current_user.username, user_id=current_user.user_id, cats=cats, items=items, subcats=subcats, is_admin=current_user.is_admin, categories=categories, subcategories=subcategories, categories_id=categories_id, subcategories_id=subcategories_id)
     else:
         return render_template('index.html')
     

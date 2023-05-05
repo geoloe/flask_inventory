@@ -192,12 +192,12 @@ function add_items_to_delete(){
     }
 }
 
-function edit_items_info(colors, categories, subcategories){
+function edit_items_info(categories, subcategories, categories_id, subcategories_id){
   //if there are no elements selected create notification banner in modal
   console.log(categories, subcategories);
-  for (const [key, value] of Object.entries(categories)) {
+  for (const [key, value] of Object.entries(categories_id)) {
     for(i=0;i<value.length;i++){
-      console.log("colors:" + value[i]);
+      console.log("categories_id:" + value[i]);
     }
   }
   if (item_ids.length == 0){
@@ -232,29 +232,102 @@ function edit_items_info(colors, categories, subcategories){
     text.setAttribute("name","items-tab")
     var innertext = document.createElement("a");
     innertext.innerHTML = item_names[i];
-    if(i==0){
-      text.setAttribute("onclick","itemTab('item-tab_"+""+item_ids[i]+"'"+","+"'item_"+""+item_ids[i]+"')");    
-    }
-    else{
-      text.setAttribute("onclick","itemTab('item-tab_"+""+item_ids[i]+"'"+","+"'item_"+""+item_ids[i]+"')");
-    }
+
+    text.setAttribute("onclick","itemTab('item-tab_"+""+item_ids[i]+"'"+","+"'item_"+""+item_ids[i]+"')"); 
+       
     text.appendChild(innertext);
 
     list.appendChild(text);
+  }
   /*
   //Create Tabs for each item selected
   */
 
   /*
   //Create edit tab content for each item selected
-  */ 
+  */
+  for (i=0;i<item_ids.length;i++){
+  
     var content_div = document.createElement("div");
     content_div.className = "item-tab-content";
     content_div.id = "item_"+item_ids[i];
     var field_div = document.createElement("div");
     field_div.className = "field";
 
+    //name control
+    var control1_div = document.createElement("div");
+    control1_div.className = "control";
+    //description control
+    var control2_div = document.createElement("div");
+    control2_div.className = "control";
+    //url control
+    var control3_div = document.createElement("div");
+    control3_div.className = "control";
+    //brand control
+    var control4_div = document.createElement("div");
+    control4_div.className = "control";
+    //item number control
+    var control5_div = document.createElement("div");
+    control5_div.className = "control";
+    //count control
+    var control6_div = document.createElement("div");
+    control6_div.className = "control";
+    //category control
+    var control7_div = document.createElement("div");
+    control7_div.className = "control";
+    //subcategory control
+    var control8_div = document.createElement("div");
+    control8_div.className = "control";
 
+    //name input
+    var input1 = document.createElement("input")
+    input1.className = "input";
+    input1.setAttribute("type", "text");
+    input1.setAttribute("name", "item-name");
+    input1.innerHTML = "";
+    input1.attributes.required = "required";
+
+    //description input
+    var input1 = document.createElement("input")
+    input1.className = "input";
+    input1.setAttribute("type", "text");
+    input1.setAttribute("name", "item-description");
+    input1.innerHTML = "";
+    input1.attributes.required = "required";
+
+    //url input
+    var input1 = document.createElement("input")
+    input1.className = "input";
+    input1.setAttribute("type", "text");
+    input1.setAttribute("name", "item-url");
+    input1.innerHTML = "";
+    input1.attributes.required = "required";
+
+    //brand input
+    var input1 = document.createElement("input")
+    input1.className = "input";
+    input1.setAttribute("type", "text");
+    input1.setAttribute("name", "item-brand");
+    input1.innerHTML = "";
+    input1.attributes.required = "required";
+
+    //item number input
+    var input1 = document.createElement("input")
+    input1.className = "input";
+    input1.setAttribute("type", "text");
+    input1.setAttribute("name", "item-number");
+    input1.innerHTML = "";
+    input1.attributes.required = "required";
+
+    //count input
+    var input1 = document.createElement("input")
+    input1.className = "input";
+    input1.setAttribute("type", "number");
+    input1.setAttribute("name", "item-count");
+    input1.innerHTML = "";
+    input1.attributes.required = "required";
+
+    //label
     var label_name = document.createElement("label");
     label_name.innerHTML = "Name";
     var label_description = document.createElement("label");
@@ -265,14 +338,109 @@ function edit_items_info(colors, categories, subcategories){
     color_label.className = "label";
     color_label.setAttribute("for", "item-select");
     color_label.innerHTML = "Choose a color:";
-    var color_select = document.createElement("select");
-    color_select.setAttribute("name", "item-select");
     var label_number = document.createElement("label");
     label_number.innerHTML = "Item Number";
     var label_number = document.createElement("label");
     label_name.innerHTML = "Count";
-    var control_div = document.createElement("div");
-    control_div.className = "control";
+    var label_category = document.createElement("label");
+    label_category.innerHTML = "Category";
+    var label_category = document.createElement("label");
+    label_category.innerHTML = "Subcategory";
+
+    //select divs
+    //category select div
+    var control7_div = document.createElement("div");
+    control7_div.className = "select is-small";
+    //subcategory select div
+    var control8_div = document.createElement("div");
+    control8_div.className = "select is-small";
+
+    //selects
+    var color_select = document.createElement("select");
+    color_select.setAttribute("name", "item-select");
+
+    //color default option
+    var color_option1 = document.createElement("option")
+    color_option1.selected = true;
+    color_option1.disabled = true;
+    color_option1.value = "";
+    color_option1.innerHTML = "--Please choose an option--";
+
+    //color option
+    var color_option2 = document.createElement("option");
+    color_option2.value = "yellow";
+    color_option2.innerHTML = "Yellow";
+
+    //color option
+    var color_option3 = document.createElement("option");
+    color_option3.value = "blue";
+    color_option3.innerHTML = "Blue";
+
+    //color option
+    var color_option4 = document.createElement("option");
+    color_option4.value = "green";
+    color_option4.innerHTML = "Green";
+
+    //color option
+    var color_option5 = document.createElement("option");
+    color_option5.value = "white";
+    color_option5.innerHTML = "White";
+
+    //color option
+    var color_option6 = document.createElement("option");
+    color_option6.value = "black";
+    color_option6.innerHTML = "Black";
+
+    //color option
+    var color_option7 = document.createElement("option");
+    color_option7.value = "grey";
+    color_option7.innerHTML = "Grey";
+
+    //color option
+    var color_option8 = document.createElement("option");
+    color_option8.value = "purple";
+    color_option8.innerHTML = "Purple";
+
+    //color option
+    var color_option9 = document.createElement("option");
+    color_option9.value = "pink";
+    color_option9.innerHTML = "Pink";
+
+    //color option
+    var color_option10 = document.createElement("option");
+    color_option10.value = "red";
+    color_option10.innerHTML = "Red";
+
+    //color option
+    var color_option11 = document.createElement("option");
+    color_option11.value = "n/a";
+    color_option11.innerHTML = "n/a";
+
+    //category default option
+    var category_option = document.createElement("option")
+    category_option.selected = true;
+    category_option.disabled = true;
+    category_option.value = "";
+    category_option.innerHTML = "--Please choose an option--";
+
+    //subcategory default option
+    var subcategory_option = document.createElement("option")
+    subcategory_option.selected = true;
+    subcategory_option.disabled = true;
+    subcategory_option.value = "";
+    subcategory_option.innerHTML = "--Please choose an option--";
+
+    /*
+    // Build form
+    */
+
+
+
+    for (const [key, value] of Object.entries(categories)) {
+      for(i=0;i<value.length;i++){
+        console.log("categories:" + value[i]);
+      }
+    }
   }
   }
 }
